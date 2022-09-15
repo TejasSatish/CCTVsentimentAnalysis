@@ -31,14 +31,17 @@ import matplotlib.pyplot as plt
 
 cap=cv2.VideoCapture(0)
 
-face_casc=cv2.CascadeClassifier("haarcascade_frontalface.xml")
-
+frontalFace_casc=cv2.CascadeClassifier("haarcascade_frontalface.xml")
+profileFace_casc=cv2.CascadeClassifier("haarcascade_profileface.xml")
 while True:
     ret, img=cap.read()
     gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    faces=face_casc.detectMultiScale(gray,1.3,5)
-    for(x,y,w,h) in faces:
-        cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+    Pfaces=profileFace_casc.detectMultiScale(gray,1.3,5)
+    Ffaces=frontalFace_casc.detectMultiScale(gray,1.3,5)
+    for(px,py,pw,ph) in Pfaces:
+        cv2.rectangle(img,(px,py),(px+pw,py+ph),(255,0,0),2)
+    for(fx,fy,fw,fh) in Ffaces:
+        cv2.rectangle(img,(fx,fy),(fx+fw,fy+fh),(255,0,0),2)
     cv2.imshow('img',img)
     k=cv2.waitKey(30) & 0xff
     if k==27:
