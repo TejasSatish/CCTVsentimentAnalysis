@@ -6,14 +6,15 @@ from time import sleep
 from keras.preprocessing.image import img_to_array
 from keras.preprocessing import image
 import os
-
+import deepface
+# all code is not modular due to performance issues
 
 cap=cv2.VideoCapture(0)
 
-classifier =load_model('assets\model.h5')
-emotion_labels = ['Angry','Disgust','Fear','Happy','Neutral', 'Sad', 'Surprise']
+classifier =load_model('assets\model.h5') # emotion classifier (cnn dumpfile)
+emotion_labels = ['Angry','Disgust','Fear','Happy','Neutral', 'Sad', 'Surprise'] #emotions
 
-frontalFace_casc=cv2.CascadeClassifier("assets\haarcascade_frontalface.xml")
+frontalFace_casc=cv2.CascadeClassifier("assets\haarcascade_frontalface.xml") #facecascades
 profileFace_casc=cv2.CascadeClassifier("assets\haarcascade_profileface.xml")
 
 pflag=0
@@ -23,7 +24,7 @@ while True:
     gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     Pfaces=profileFace_casc.detectMultiScale(gray,1.3,5)
     Ffaces=frontalFace_casc.detectMultiScale(gray,1.3,5)
-    for(px,py,pw,ph) in Pfaces:
+    for(px,py,pw,ph) in Pfaces: #detects profile view of faces
         pflag=1
 
         cv2.rectangle(gray,(px,py),(px+pw,py+ph),(255,0,0),2)
@@ -40,7 +41,7 @@ while True:
             label_position = (px,py)
             cv2.putText(gray,label,label_position,cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2) 
     else:
-        for(fx,fy,fw,fh) in Ffaces:
+        for(fx,fy,fw,fh) in Ffaces: #detects front view of faces
             cv2.rectangle(gray,(fx,fy),(fx+fw,fy+fh),(255,0,0),2)
 
             roi_gray = gray[fy:fy+fh,fx:fx+fw]
