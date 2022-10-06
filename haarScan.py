@@ -22,8 +22,8 @@ fflag=0
 while True:
     ret, img=cap.read()
     gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    Pfaces=profileFace_casc.detectMultiScale(gray,1.3,5)
     Ffaces=frontalFace_casc.detectMultiScale(gray,1.3,5)
+    Pfaces=profileFace_casc.detectMultiScale(gray,1.3,5)
     for(px,py,pw,ph) in Pfaces: #detects profile view of faces
         pflag=1
 
